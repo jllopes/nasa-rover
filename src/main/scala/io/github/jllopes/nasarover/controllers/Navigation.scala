@@ -13,6 +13,7 @@ object Navigation {
 
   def impl[F[_]: Applicative](navigationServices: NavigationServices[F]): Navigation[F] = new Navigation[F] {
     override def navigate(commands: String): F[Position] = {
+      // TODO: Filter invalid instructions
       navigationServices.navigate(commands.toList)
     }
   }

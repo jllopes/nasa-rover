@@ -4,6 +4,7 @@ import cats.effect.Sync
 import cats.implicits._
 import io.github.jllopes.nasarover.controllers.Navigation
 import io.github.jllopes.nasarover.domain.Command
+import io.github.jllopes.nasarover.domain.Command._
 import io.github.jllopes.nasarover.domain.Position._
 import org.http4s.HttpRoutes
 import org.http4s.circe.CirceEntityCodec.circeEntityEncoder
@@ -18,7 +19,7 @@ object NasaRoverRoutes {
     HttpRoutes.of[F] {
       case req @ POST -> Root / "navigate" =>
         req.decodeJson[Command].flatMap { command =>
-          Ok(navigation.navigate(command.value))
+          Ok(navigation.navigate(command.command))
         }
     }
   }
