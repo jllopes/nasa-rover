@@ -1,3 +1,5 @@
+enablePlugins(AshScriptPlugin)
+
 lazy val root = (project in file("."))
   .settings(
     organization := "io.github.jllopes",

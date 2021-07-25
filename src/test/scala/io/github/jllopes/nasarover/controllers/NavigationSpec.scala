@@ -10,9 +10,9 @@ import org.http4s._
 import org.http4s.implicits._
 
 class NavigationSpec extends CatsEffectSuite {
-  private def initializeRoutes: HttpRoutes[IO] = {
+  private def initializeRoutes[F[_]]: HttpRoutes[IO] = {
     val initialPosition = Position(Coordinates(0,0), North)
-    val positionRef = Ref[IO].of(initialPosition)
+    val positionRef = Ref[IO].of(initialPosition).unsafeRunSync()
     val navigationServices = NavigationServices.impl[IO](positionRef)
     val navigation = Navigation.impl[IO](navigationServices)
     NasaRoverRoutes.navigationRoutes(navigation)

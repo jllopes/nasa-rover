@@ -13,18 +13,17 @@ trait NavigationServices[F[_]] {
 object NavigationServices extends LazyLogging {
   implicit def apply[F[_]](implicit ev: NavigationServices[F]): NavigationServices[F] = ev
 
-  def impl[F[_] : Effect](positionRef: F[Ref[F, Position]]): NavigationServices[F] = new NavigationServices[F] {
+  def impl[F[_] : Effect](positionRef: Ref[F, Position]): NavigationServices[F] = new NavigationServices[F] {
     def navigate(commandList: List[Char]): F[Position] = {
       for {
-        position <- positionRef
-        _ <- position.update {
+        _ <- positionRef.update {
           currentPosition =>
             commandList.headOption.fold(currentPosition) {
               nextCommand =>
                 executeCommands(nextCommand, commandList.drop(1), currentPosition)
             }
         }
-        result <- position.get
+        result <- positionRef.get
       } yield {
         result
       }

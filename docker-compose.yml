@@ -1,0 +1,10 @@
+version: '2.1'
+
+services:
+  web:
+    image: nasa-rover
+    build: .
+    environment:
+      - HTTP_PORT=${SERVER_HTTP_PORT:-8080}
+    ports:
+      - "8080:8080"
